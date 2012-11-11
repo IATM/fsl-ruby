@@ -5,11 +5,11 @@ require 'fsl-ruby/version'
 
 Gem::Specification.new do |gem|
   gem.name          = "fsl-ruby"
-  gem.version       = Fsl::Ruby::VERSION
+  gem.version       = FSL::VERSION
   gem.authors       = ["Simon Rascovsky"]
   gem.email         = ["simonmd@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{Ruby Wrapper for the FSL Neuroimaging suite}
+  gem.summary       = %q{Ruby Wrapper for the FSL Neuroimaging suite}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)

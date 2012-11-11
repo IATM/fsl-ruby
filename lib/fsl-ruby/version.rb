@@ -1,5 +1,3 @@
-module Fsl
-  module Ruby
+module FSL
     VERSION = "0.0.1"
-  end
 end
