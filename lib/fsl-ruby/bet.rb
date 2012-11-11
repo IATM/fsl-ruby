@@ -12,12 +12,22 @@ module FSL
 	# -c < x y z> centre-of-gravity (voxels not mm) of initial mesh surface.
 	# -t apply thresholding to segmented brain image and mask
 	# -e generates brain surface as mesh in .vtk format.
+		@@command_path = '/usr/local/fsl/bin/bet'
+
+			def self.command_path=(path)
+				@@command_path = path
+			end
+
+			def self.command_path
+				@@command_path
+			end
+
 
 		@@options_map = { outline: '-o',
 							mask: '-m',
 							skull: '-s',
 							no_output: '-n',
-							fi_threshold: '-i',
+							fi_threshold: '-f',
 							v_gradient: '-g',
 							radius: '-r',
 							centre: '-c',
@@ -25,9 +35,10 @@ module FSL
 							mesh: '-e'
 						}
 
-		def initialize(input_dir, output_dir, opt = {})
-			@input_dir = input_dir
-			@input_dir = input_dir
+		def initialize(input_file, output_dir, opt = {})
+			@input_file = input_file
+			@basename = File.basename(input_file, '.nii.gz')
+			@output_dir = output_dir
 			@opt = opt
 		end
 
@@ -49,6 +60,26 @@ module FSL
 
 		def argument_list
 			map_options(@opt).collect {|k,v| v}.join(' ')
+		end
+
+		def command
+			command_string = "#{self.class.command_path} #{@input_file} #{@output_dir}/#{@basename}_brain #{argument_list}"
+			puts "THIS IS THE COMMAND TO BE RUN: #{command_string}"
+			output = `#{command_string}`
+			exit_code = $?
+			case exit_code
+				when 0
+					return output
+				else
+			        #   exit_error = Dcm2nii::Runner::UnexpectedExitError.new
+			        #   exit_error.exit_code = exit_code
+			        #   raise exit_error
+			        # end
+			end
+		end
+
+		def get_result
+  			return `find #{@output_dir} -name *_brain.nii*`.chomp
 		end
 
 	end
