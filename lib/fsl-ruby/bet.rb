@@ -63,14 +63,16 @@ module FSL
 		end
 
 		def command
-			command_string = "#{self.class.command_path} #{@input_file} #{@output_dir}/#{@basename}_brain #{argument_list}"
-			puts "THIS IS THE COMMAND TO BE RUN: #{command_string}"
-			output = `#{command_string}`
+			command_str = "#{self.class.command_path} #{@input_file} #{@output_dir}/#{@basename}_brain #{argument_list}"
+			puts "Running BET with command: #{command_str}..."
+			result = `#{command_str}`
 			exit_code = $?
 			case exit_code
 				when 0
-					return output
+					puts "Done running BET."
+					return result
 				else
+					puts "An error ocurred while running BET"
 			        #   exit_error = Dcm2nii::Runner::UnexpectedExitError.new
 			        #   exit_error.exit_code = exit_code
 			        #   raise exit_error
